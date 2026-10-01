@@ -1,0 +1,62 @@
+# ==============================================================================
+# AI-Based Pedestrian Intention Prediction and Context-Aware Safety Alert System
+# PD-TCR Research Configuration File
+# ==============================================================================
+
+model:
+  name: "yolov8n.pt"
+  framework: "ultralytics"
+  conf_threshold: 0.45
+  iou_threshold: 0.45
+  device: "cpu" # 'cpu', 'cuda', 'mps'
+  classes: [0] # 0 = person in COCO dataset
+  imgsz: 640
+
+tracker:
+  type: "bytetrack"
+  track_thresh: 0.50
+  track_buffer: 30
+  match_thresh: 0.75
+  min_box_area: 10
+
+distance_estimation:
+  preferred_method: "ground_plane" # 'ground_plane' or 'bbox_height'
+  camera:
+    focal_length_px: 1150.0
+    camera_height_m: 1.35
+    pitch_angle_deg: 2.0
+    pedestrian_reference_height_m: 1.70
+    hfov_deg: 72.0
+    vfov_deg: 44.0
+
+collision_zone:
+  lane_width_m: 3.6
+  default_lookahead_m: 45.0
+  horizon_ratio: 0.46
+  hood_base_width_ratio: 0.44
+
+pd_tcr_risk_fusion:
+  weights:
+    Wd: 0.20 # Distance risk weight
+    Wt: 0.15 # Trajectory heading weight
+    Wc: 0.20 # Dynamic collision zone weight
+    Wv: 0.15 # Relative velocity weight
+    Wtcc: 0.20 # Time-to-collision (TTC) weight
+    Wi: 0.10 # Crossing intention weight
+
+  thresholds:
+    low_max: 25
+    medium_max: 50
+    high_max: 75
+    critical_min: 76
+    ttc_critical_sec: 2.0
+    ttc_warning_sec: 3.8
+
+vehicle_dynamics:
+  default_speed_kmh: 35.0
+  speed_source: "manual" # 'manual', 'can_bus', 'gps'
+
+alerts:
+  audio_enabled: true
+  volume: 0.65
+  log_export_format: ["csv", "json", "sqlite"]

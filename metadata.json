@@ -1,0 +1,6 @@
+{
+  "name": "AI Pedestrian Safety System",
+  "description": "AI-based pedestrian intention prediction and context-aware safety alert system with YOLOv8, ByteTrack, monocular distance estimation, and PD-TCR collision risk fusion.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
